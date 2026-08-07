@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookly — Precificação</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="/css/precificacao.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="navbar" id="navbar"></nav>
+    <div class="menu-overlay" onclick="closeMobileMenu()"></div>
+    <aside class="mobile-menu" id="mobile-menu"></aside>
+
+    <div class="card-wrap">
+        <div class="card">
+            <div class="card-header">
+                <h1>Cadastre seu livro</h1>
+            </div>
+
+            <div class="step-tracker">
+                <div class="step-node">
+                    <div class="step-dot completed"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg></div><span class="step-text completed">Informações básicas</span>
+                </div>
+                <div class="step-bar completed"></div>
+                <div class="step-node">
+                    <div class="step-dot completed"><svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="3">
+                            <polyline points="20 6 9 17 4 12" />
+                        </svg></div><span class="step-text completed">Características físicas</span>
+                </div>
+                <div class="step-bar completed"></div>
+                <div class="step-node">
+                    <div class="step-dot active">3</div><span class="step-text active">Precificação</span>
+                </div>
+            </div>
+
+            <div class="section-label">Recomendação de preço</div>
+
+            <div id="content-area">
+                <div class="loading-area">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">Analisando dados do livro...</div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <span class="step-info">Passo 3 de 3</span>
+                <div class="footer-btns">
+                    <a href="estado-exemplar.html" class="btn btn-outline">Voltar</a>
+                    <button class="btn btn-green" onclick="finalizarRegistro()">Registrar</button>
+                </div>
+            </div>
+            <div class="dots"><span class="dot active"></span><span class="dot active"></span><span
+                    class="dot active"></span></div>
+        </div>
+    </div>
+    <script src="/js/precificacao.js"></script>
+</body>
+
+</html>

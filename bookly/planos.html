@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookly — Planos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="/css/planos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ELEMENTOS 3D -->
+    <div class="float-3d fc-cube"></div>
+    <div class="float-3d fc-orb"></div>
+    <div class="float-3d fc-ring"></div>
+    <div class="float-3d fc-diamond"></div>
+    <div class="float-3d fc-sparkle"></div>
+    <div class="float-3d fc-sparkle2"></div>
+    <div class="float-3d fc-sparkle3"></div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar"></nav>
+    <div class="menu-overlay" onclick="closeMobileMenu()"></div>
+    <aside class="mobile-menu" id="mobile-menu"></aside>
+
+    <!-- PLANOS -->
+    <div class="container">
+        <div class="header">
+            <h1>Planos que se adaptam ao seu jeito de ler</h1>
+            <p>Mais recursos, mais descobertas e uma experiência de leitura completa.</p>
+        </div>
+
+        <div class="plans-grid">
+            <!-- INICIANTE -->
+            <div class="plan-card plan-blue">
+                <div class="plan-badge badge-blue">Mais em conta</div>
+                <div class="plan-icon icon-blue">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                    </svg>
+                </div>
+                <div class="plan-title">Iniciante</div>
+                <div class="plan-subtitle">Para quem está começando</div>
+                <ul class="plan-features">
+                    <li><span class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Até 5 anúncios por mês</li>
+                    <li><span class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Busca por ISBN ou nome</li>
+                    <li><span class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Comparação simples de preços</li>
+                    <li><span class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Lista de favoritos</li>
+                    <li><span class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Suporte por e-mail</li>
+                </ul>
+                <div class="plan-price"><span class="plan-currency">R$</span><span class="plan-value">19,90</span></div>
+                <div class="plan-period">Por mês</div>
+                <button class="plan-btn" onclick="selectPlan('Iniciante', 19.90, 'blue')">
+                    Escolher plano
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- INTERMEDIÁRIO -->
+            <div class="plan-card plan-green">
+                <div class="plan-badge badge-green">Recomendado</div>
+                <div class="plan-icon icon-green">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon
+                            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                    </svg>
+                </div>
+                <div class="plan-title">Intermediário</div>
+                <div class="plan-subtitle">Para leitores assíduos</div>
+                <ul class="plan-features">
+                    <li><span class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Até 20 anúncios por mês</li>
+                    <li><span class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Busca avançada com filtros</li>
+                    <li><span class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Comparação em múltiplas lojas</li>
+                    <li><span class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Alertas de preço personalizados</li>
+                    <li><span class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Suporte prioritário por chat</li>
+                </ul>
+                <div class="plan-price"><span class="plan-currency">R$</span><span class="plan-value">24,90</span></div>
+                <div class="plan-period">Por mês</div>
+                <button class="plan-btn" onclick="selectPlan('Intermediário', 24.90, 'green')">
+                    Escolher plano
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- AVANÇADO -->
+            <div class="plan-card plan-purple">
+                <div class="plan-badge badge-purple">Mais Vendido</div>
+                <div class="plan-icon icon-purple">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M2 20h20l-2-12-4 4-4-8-4 8-4-4-2 12z" />
+                    </svg>
+                </div>
+                <div class="plan-title">Avançado</div>
+                <div class="plan-subtitle">Para colecionadores e lojistas</div>
+                <ul class="plan-features">
+                    <li><span class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Anúncios ilimitados</li>
+                    <li><span class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Relatórios de mercado completos</li>
+                    <li><span class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Comparação premium em tempo real</li>
+                    <li><span class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Estatísticas de visualizações</li>
+                    <li><span class="feat-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="3">
+                                <polyline points="20 6 9 17 4 12" />
+                            </svg></span>Suporte dedicado 24/7</li>
+                </ul>
+                <div class="plan-price"><span class="plan-currency">R$</span><span class="plan-value">49,90</span></div>
+                <div class="plan-period">Por mês</div>
+                <button class="plan-btn" onclick="selectPlan('Avançado', 49.90, 'purple')">
+                    Escolher plano
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <line x1="5" y1="12" x2="19" y2="12" />
+                        <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="/js/planos.js"></script>
+</body>
+
+</html>

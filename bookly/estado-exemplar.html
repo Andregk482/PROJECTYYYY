@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bookly — Estado do Exemplar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --azul: #4A90D9; --azul-escuro: #3B7BC0; --azul-claro: #E8F1FB; --azul-suave: #D6E9F9;
+  --azul-glow: rgba(74,144,217,0.12); --verde: #48BB78; --verde-escuro: #38A169;
+  --roxo: #8B5CF6; --dourado: #F6B73C; --vermelho: #F56565; --branco: #FFFFFF;
+  --bg-primary: #FFFFFF; --bg-secondary: #F7F9FC; --bg-tertiary: #EEF2F7;
+  --text-primary: #0F172A; --text-secondary: #475569; --text-tertiary: #94A3B8;
+  --border: #E2E8F0; --border-strong: #CBD5E1;
+  --sombra-sm: 0 1px 3px rgba(0,0,0,0.04);
+  --sombra-card: 0 12px 40px rgba(15,23,42,0.08), 0 4px 12px rgba(0,0,0,0.03);
+  --raio: 12px; --raio-sm: 8px; --raio-lg: 18px;
+  --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+[data-theme="dark"] {
+  --azul-claro: #1B2A41; --azul-suave: #162236; --azul-glow: rgba(74,144,217,0.2);
+  --verde-claro: #142A1E; --roxo-claro: #1F1A33; --branco: #1A1F2E;
+  --bg-primary: #131826; --bg-secondary: #0F1320; --bg-tertiary: #1E2436;
+  --text-primary: #F1F5F9; --text-secondary: #94A3B8; --text-tertiary: #64748B;
+  --border: #2A3142; --border-strong: #3A4256;
+  --sombra-card: 0 12px 40px rgba(0,0,0,0.4), 0 4px 12px rgba(0,0,0,0.2);
+}
+html, body { height: 100%; font-family: var(--font); }
+body {
+  background: url('https://generated-images.adapta.one/ademilson%40almatra.com.br/019fcf98-1fc5-7753-a266-2dc743e8d343/2026-08-07T00-17-06-637Z_Original_user_intent_A_premium_modern_website_ba.png') center center / cover no-repeat fixed;
+  color: var(--text-primary); overflow: hidden; min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+body::before { content: ''; position: fixed; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(240,245,255,0.05)); pointer-events: none; z-index: 0; }
+[data-theme="dark"] body::before { background: rgba(15,19,32,0.6); }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input, select, textarea { font-family: inherit; outline: none; }
+::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+
+/* ===== NAVBAR ===== */
+.navbar { display: flex; align-items: center; gap: 20px; padding: 0 24px; height: 58px; background: rgba(255,255,255,0.88); backdrop-filter: saturate(180%) blur(14px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; flex-shrink: 0; }
+[data-theme="dark"] .navbar { background: rgba(19,24,38,0.88); }
+.logo { display: flex; align-items: center; gap: 7px; font-size: 1.1rem; font-weight: 800; color: var(--text-primary); flex-shrink: 0; }
+.logo-icon { width: 28px; height: 28px; background: linear-gradient(135deg, var(--azul), var(--azul-escuro)); border-radius: 7px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(74,144,217,0.25); }
+.nav-spacer { flex: 1; }
+.nav-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.nav-btn-icon { width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-primary); display: flex; align-items: center; justify-content: center; color: var(--text-secondary); transition: var(--transition); }
+.nav-btn-icon:hover { border-color: var(--border-strong); color: var(--text-primary); }
+.nav-btn-icon svg { width: 16px; height: 16px; }
+.btn { padding: 7px 16px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; transition: var(--transition); display: inline-flex; align-items: center; justify-content: center; gap: 5px; white-space: nowrap; }
+.btn-outline { background: var(--bg-primary); color: var(--text-primary); border: 1px solid var(--border-strong); }
+.btn-outline:hover { border-color: var(--text-secondary); background: var(--bg-tertiary); }
+.btn-primary { background: var(--azul); color: var(--branco); border: 1px solid var(--azul); }
+.btn-primary:hover { background: var(--azul-escuro); border-color: var(--azul-escuro); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(74,144,217,0.25); }
+.btn-danger { background: var(--bg-primary); color: var(--vermelho); border: 1px solid rgba(245,101,101,0.3); }
+.btn-danger:hover { background: rgba(245,101,101,0.08); border-color: var(--vermelho); }
+.user-badge { display: flex; align-items: center; gap: 7px; padding: 3px 12px 3px 3px; background: var(--bg-tertiary); border-radius: 20px; transition: var(--transition); }
+.user-badge:hover { background: var(--border); }
+.user-avatar { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, var(--azul), var(--azul-escuro)); display: flex; align-items: center; justify-content: center; color: var(--branco); font-weight: 700; font-size: 0.72rem; }
+.user-name { font-size: 0.76rem; font-weight: 600; color: var(--text-primary); max-width: 90px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hamburger { display: none; width: 34px; height: 34px; flex-direction: column; justify-content: center; align-items: center; gap: 4px; border: 1px solid var(--border-strong); border-radius: 8px; background: var(--bg-primary); cursor: pointer; }
+.hamburger span { width: 16px; height: 2px; background: var(--text-primary); border-radius: 2px; transition: var(--transition); }
+.hamburger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+.mobile-menu { position: fixed; top: 0; right: -300px; width: 280px; height: 100vh; background: var(--bg-primary); z-index: 200; display: flex; flex-direction: column; padding: 20px 16px; transition: right 0.35s var(--transition); overflow-y: auto; box-shadow: -8px 0 40px rgba(0,0,0,0.12); }
+.mobile-menu.open { right: 0; }
+.mobile-menu-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+.mobile-menu-close { width: 30px; height: 30px; border: 1px solid var(--border); border-radius: 7px; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); }
+.mobile-menu-item { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 10px; font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); transition: var(--transition); margin-bottom: 2px; }
+.mobile-menu-item:hover { background: var(--bg-tertiary); color: var(--text-primary); }
+.mobile-menu-item svg { width: 18px; height: 18px; }
+.mobile-menu-divider { height: 1px; background: var(--border); margin: 12px 0; }
+.mobile-menu-user { display: flex; align-items: center; gap: 10px; padding: 10px 12px; background: var(--bg-tertiary); border-radius: 10px; margin-bottom: 12px; }
+.mobile-menu-user-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--azul), var(--azul-escuro)); display: flex; align-items: center; justify-content: center; color: var(--branco); font-weight: 700; font-size: 0.85rem; }
+.mobile-menu-user-info { flex: 1; min-width: 0; }
+.mobile-menu-user-name { font-size: 0.8rem; font-weight: 700; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mobile-menu-user-email { font-size: 0.66rem; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.35); z-index: 150; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+.menu-overlay.show { opacity: 1; pointer-events: all; }
+
+/* ===== CARD ===== */
+.card-wrap { position: relative; z-index: 1; height: calc(100vh - 58px); display: flex; align-items: center; justify-content: center; padding: 12px 20px; overflow-y: auto; }
+.card { width: min(860px, 100%); max-height: 100%; background: rgba(255,255,255,0.97); backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: var(--raio-lg); box-shadow: var(--sombra-card); padding: 22px 30px 14px; display: flex; flex-direction: column; overflow: hidden; }
+[data-theme="dark"] .card { background: rgba(19,24,38,0.97); }
+.card-header { text-align: center; margin-bottom: 10px; }
+.card-header h1 { font-size: 1.2rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.3px; }
+
+/* Step tracker */
+.step-tracker { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 12px; }
+.step-node { display: flex; align-items: center; gap: 6px; }
+.step-dot { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.66rem; font-weight: 700; flex-shrink: 0; transition: var(--transition); }
+.step-dot.active { background: var(--azul); color: var(--branco); }
+.step-dot.completed { background: var(--azul); color: var(--branco); }
+.step-dot.inactive { background: var(--bg-tertiary); color: var(--text-tertiary); }
+.step-text { font-size: 0.66rem; font-weight: 500; color: var(--text-tertiary); white-space: nowrap; }
+.step-text.active { color: var(--text-primary); font-weight: 600; }
+.step-text.completed { color: var(--azul-escuro); font-weight: 600; }
+[data-theme="dark"] .step-text.completed { color: var(--azul); }
+.step-bar { width: 32px; height: 2px; background: var(--border); margin: 0 8px; border-radius: 1px; position: relative; overflow: hidden; }
+.step-bar.completed::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, var(--azul), var(--azul-escuro)); }
+
+.section-label { font-size: 0.88rem; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; padding-bottom: 5px; border-bottom: 1px solid var(--border); }
+
+/* Form content */
+.form-scroll { flex: 1; overflow-y: auto; overflow-x: hidden; padding-right: 4px; }
+.form-scroll::-webkit-scrollbar { width: 4px; }
+.form-scroll::-webkit-scrollbar-thumb { background: var(--azul-suave); border-radius: 4px; }
+
+/* Estado buttons */
+.estado-buttons { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.estado-btn { flex: 1; min-width: 88px; padding: 8px 6px; border: 1px solid var(--border); border-radius: var(--raio-sm); background: var(--bg-primary); transition: var(--transition); display: flex; flex-direction: column; align-items: center; gap: 2px; cursor: pointer; }
+.estado-btn:hover { border-color: var(--azul); transform: translateY(-2px); box-shadow: 0 2px 8px rgba(74,144,217,0.08); }
+.estado-btn.active { border-color: var(--azul); background: var(--azul-claro); box-shadow: 0 2px 12px rgba(74,144,217,0.12); }
+.estado-icon { width: 18px; height: 18px; color: var(--text-tertiary); transition: var(--transition); }
+.estado-btn.active .estado-icon { color: var(--azul); }
+.estado-name { font-size: 0.74rem; font-weight: 600; color: var(--text-primary); transition: var(--transition); }
+.estado-desc { font-size: 0.58rem; color: var(--text-tertiary); text-align: center; }
+
+/* Binding + Qty row */
+.binding-row { display: flex; gap: 14px; align-items: stretch; margin-bottom: 12px; }
+.binding-group { flex: 1; }
+.binding-label, .qtd-label { font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px; }
+.binding-buttons { display: flex; gap: 8px; }
+.binding-btn { flex: 1; padding: 9px 12px; border: 1px solid var(--border); border-radius: var(--raio-sm); background: var(--bg-primary); font-size: 0.78rem; font-weight: 500; color: var(--text-secondary); transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; }
+.binding-btn:hover { border-color: var(--azul); }
+.binding-btn.active { border-color: var(--azul); background: var(--azul-claro); color: var(--azul-escuro); font-weight: 600; }
+[data-theme="dark"] .binding-btn.active { color: var(--azul); }
+
+.qtd-group { width: 110px; flex-shrink: 0; }
+.qtd-wrap { display: flex; align-items: center; border: 1px solid var(--border); border-radius: var(--raio-sm); overflow: hidden; background: var(--bg-primary); transition: var(--transition); }
+.qtd-wrap:focus-within { border-color: var(--azul); }
+.qtd-btn { width: 32px; height: 34px; border: none; background: var(--bg-tertiary); color: var(--azul-escuro); font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; }
+[data-theme="dark"] .qtd-btn { color: var(--azul); }
+.qtd-btn:hover { background: var(--azul-suave); }
+.qtd-input { flex: 1; width: 100%; border: none; text-align: center; font-size: 0.88rem; font-weight: 600; color: var(--text-primary); background: transparent; -moz-appearance: textfield; }
+.qtd-input::-webkit-outer-spin-button, .qtd-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* Chips */
+.chips-group { margin-bottom: 12px; }
+.chips-label { font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { padding: 6px 12px; border: 1px solid var(--border); border-radius: 20px; background: var(--bg-primary); font-size: 0.72rem; font-weight: 500; color: var(--text-secondary); transition: var(--transition); cursor: pointer; display: flex; align-items: center; gap: 5px; }
+.chip:hover { border-color: var(--azul); transform: translateY(-1px); }
+.chip.active { border-color: var(--azul); background: var(--azul-claro); color: var(--azul-escuro); font-weight: 600; box-shadow: 0 2px 8px rgba(74,144,217,0.1); }
+[data-theme="dark"] .chip.active { color: var(--azul); }
+.chip-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-strong); transition: var(--transition); }
+.chip.active .chip-dot { background: var(--azul); box-shadow: 0 0 6px var(--azul); }
+
+/* Textarea */
+.notes-group { flex: 1; display: flex; flex-direction: column; min-height: 0; margin-bottom: 10px; }
+.notes-label { font-size: 0.7rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px; }
+.notes-area { flex: 1; min-height: 50px; padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--raio-sm); font-size: 0.78rem; color: var(--text-primary); resize: none; background: var(--bg-primary); transition: var(--transition); }
+.notes-area::placeholder { color: var(--text-tertiary); }
+.notes-area:focus { border-color: var(--azul); box-shadow: 0 0 0 3px var(--azul-glow); }
+
+/* Footer */
+.card-footer { margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+.step-info { font-size: 0.74rem; color: var(--text-secondary); font-weight: 500; }
+.footer-btns { display: flex; gap: 8px; }
+.dots { display: flex; justify-content: center; gap: 5px; margin-top: 5px; }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-strong); transition: var(--transition); }
+.dot.active { background: var(--azul); width: 18px; border-radius: 3px; }
+
+.notification { position: fixed; bottom: 20px; right: 20px; background: var(--bg-primary); border: 1px solid var(--border); padding: 10px 18px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; box-shadow: var(--sombra-card); z-index: 9999; display: flex; align-items: center; gap: 8px; animation: notifIn 0.3s var(--transition); }
+@keyframes notifIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 768px) {
+  body { overflow-y: auto; }
+  .hamburger { display: flex; } .nav-actions .btn { display: none; } .nav-actions .user-badge { display: none; }
+  .navbar { padding: 0 14px; gap: 10px; height: 52px; } .logo { font-size: 1rem; } .logo-icon { width: 26px; height: 26px; }
+  .card-wrap { padding: 8px; height: auto; min-height: calc(100vh - 52px); }
+  .card { padding: 16px 14px 12px; border-radius: 14px; max-height: none; }
+  .card-header h1 { font-size: 1.05rem; } .step-text { display: none; } .step-bar { width: 14px; margin: 0 4px; }
+  .estado-btn { min-width: 70px; padding: 7px 4px; } .estado-name { font-size: 0.7rem; } .estado-desc { font-size: 0.54rem; }
+  .binding-row { flex-direction: column; gap: 10px; } .qtd-group { width: 100%; }
+  .card-footer { flex-direction: column; gap: 8px; } .footer-btns { width: 100%; } .footer-btns .btn { flex: 1; }
+}
+@media (max-width: 480px) {
+  .card { padding: 14px 12px 10px; } .card-header h1 { font-size: 0.95rem; }
+  .step-dot { width: 22px; height: 22px; font-size: 0.6rem; }
+  .estado-btn { min-width: calc(50% - 3px); } .estado-desc { display: none; }
+  .binding-btn { font-size: 0.72rem; padding: 8px 10px; } .chip { font-size: 0.66rem; padding: 5px 10px; }
+  .notes-area { font-size: 0.72rem; } .btn { font-size: 0.74rem; padding: 8px 14px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar"></nav>
+<div class="menu-overlay" onclick="closeMobileMenu()"></div>
+<aside class="mobile-menu" id="mobile-menu"></aside>
+
+<div class="card-wrap">
+  <div class="card">
+    <div class="card-header"><h1>Estado e Detalhes do Exemplar</h1></div>
+
+    <div class="step-tracker">
+      <div class="step-node"><div class="step-dot completed"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span class="step-text completed">Informações básicas</span></div>
+      <div class="step-bar completed"></div>
+      <div class="step-node"><div class="step-dot active">2</div><span class="step-text active">Características físicas</span></div>
+      <div class="step-bar"></div>
+      <div class="step-node"><div class="step-dot inactive">3</div><span class="step-text">Precificação</span></div>
+    </div>
+
+    <div class="section-label">Estado do livro</div>
+
+    <div class="form-scroll">
+      <div class="estado-buttons" id="estado-buttons">
+        <button type="button" class="estado-btn" data-estado="Perfeito" onclick="selectEstado(this)">
+          <svg class="estado-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+          <span class="estado-name">Perfeito</span><span class="estado-desc">Perfeitas condições</span>
+        </button>
+        <button type="button" class="estado-btn" data-estado="Bom" onclick="selectEstado(this)">
+          <svg class="estado-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 10v12M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H7"/></svg>
+          <span class="estado-name">Bom</span><span class="estado-desc">Condição muito boa</span>
+        </button>
+        <button type="button" class="estado-btn active" data-estado="Médio" onclick="selectEstado(this)">
+          <svg class="estado-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          <span class="estado-name">Médio</span><span class="estado-desc">Pequena avaria</span>
+        </button>
+        <button type="button" class="estado-btn" data-estado="Ruim" onclick="selectEstado(this)">
+          <svg class="estado-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span class="estado-name">Ruim</span><span class="estado-desc">Avaria notável</span>
+        </button>
+        <button type="button" class="estado-btn" data-estado="Péssimo" onclick="selectEstado(this)">
+          <svg class="estado-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+          <span class="estado-name">Péssimo</span><span class="estado-desc">Danos significativos</span>
+        </button>
+      </div>
+
+      <div class="binding-row">
+        <div class="binding-group">
+          <div class="binding-label">Encadernação</div>
+          <div class="binding-buttons">
+            <button type="button" class="binding-btn active" onclick="selectBinding(this)">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              Capadura
+            </button>
+            <button type="button" class="binding-btn" onclick="selectBinding(this)">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+              Brochura
+            </button>
+          </div>
+        </div>
+        <div class="qtd-group">
+          <div class="qtd-label">Quantidade</div>
+          <div class="qtd-wrap">
+            <button type="button" class="qtd-btn" onclick="adjustQty(-1)">−</button>
+            <input type="number" class="qtd-input" id="qtd" value="1" min="1" max="999">
+            <button type="button" class="qtd-btn" onclick="adjustQty(1)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="chips-group">
+        <div class="chips-label">Atributos especiais</div>
+        <div class="chips" id="chips">
+          <button type="button" class="chip" onclick="toggleChip(this)"><span class="chip-dot"></span>Primeira edição</button>
+          <button type="button" class="chip" onclick="toggleChip(this)"><span class="chip-dot"></span>Cópia Assinada</button>
+          <button type="button" class="chip active" onclick="toggleChip(this)"><span class="chip-dot"></span>Impresso Limitada</button>
+          <button type="button" class="chip" onclick="toggleChip(this)"><span class="chip-dot"></span>Fora de catálogo</button>
+          <button type="button" class="chip" onclick="toggleChip(this)"><span class="chip-dot"></span>Vintage</button>
+          <button type="button" class="chip" onclick="toggleChip(this)"><span class="chip-dot"></span>Antiguidade</button>
+        </div>
+      </div>
+
+      <div class="notes-group">
+        <div class="notes-label">Observações</div>
+        <textarea class="notes-area" id="observacoes" placeholder="Qualquer anotações manuscritas, inscrições ou ex-libris, páginas rasgadas, manchas..."></textarea>
+      </div>
+    </div>
+
+    <div class="card-footer">
+      <span class="step-info">Passo 2 de 3</span>
+      <div class="footer-btns">
+        <a href="cadastrar-livro.html" class="btn btn-outline">Voltar</a>
+        <button class="btn btn-primary" onclick="saveStep2()">Continuar</button>
+      </div>
+    </div>
+    <div class="dots"><span class="dot active"></span><span class="dot active"></span><span class="dot"></span></div>
+  </div>
+</div>
+
+<script>
+const Store = {
+  get(key, def = null) { try { return JSON.parse(localStorage.getItem(key)) || def; } catch { return def; } },
+  set(key, val) { localStorage.setItem(key, JSON.stringify(val)); },
+  remove(key) { localStorage.removeItem(key); }
+};
+const Auth = {
+  current() { return Store.get('bookly_currentUser'); },
+  isLoggedIn() { return !!this.current(); },
+  logout() { Store.remove('bookly_currentUser'); window.location.href = 'index.html'; }
+};
+if (!Auth.isLoggedIn()) { window.location.href = 'login.html'; }
+const user = Auth.current();
+
+function initDarkMode() { if (Store.get('bookly_darkMode', false)) document.documentElement.setAttribute('data-theme', 'dark'); }
+function toggleDarkMode() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  if (isDark) { document.documentElement.removeAttribute('data-theme'); Store.set('bookly_darkMode', false); }
+  else { document.documentElement.setAttribute('data-theme', 'dark'); Store.set('bookly_darkMode', true); }
+  buildNavbar(); buildMobileMenu();
+}
+function toggleMobileMenu() { document.getElementById('mobile-menu').classList.toggle('open'); document.querySelector('.menu-overlay').classList.toggle('show'); document.querySelector('.hamburger')?.classList.toggle('open'); }
+function closeMobileMenu() { document.getElementById('mobile-menu').classList.remove('open'); document.querySelector('.menu-overlay').classList.remove('show'); document.querySelector('.hamburger')?.classList.remove('open'); }
+
+// ===== NAVBAR COM LOGO + BOTÃO VENDER =====
+function buildNavbar() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const darkIcon = isDark
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+
+  document.getElementById('navbar').innerHTML = `
+    <a href="explorar.html" class="logo">
+      <div class="logo-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+      <span>Bookly</span>
+    </a>
+    <div class="nav-spacer"></div>
+    <div class="nav-actions">
+      <a href="cadastrar-livro.html" class="btn btn-outline" style="font-size:0.78rem;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Vender livro
+      </a>
+      <button class="nav-btn-icon" onclick="toggleDarkMode()">${darkIcon}</button>
+      <div class="user-badge"><div class="user-avatar">${user.name.charAt(0).toUpperCase()}</div><span class="user-name">${user.name.split(' ')[0]}</span></div>
+      <a href="#" onclick="Auth.logout();return false;" class="btn btn-danger">Sair</a>
+      <button class="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
+    </div>`;
+}
+
+function buildMobileMenu() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const darkIcon = isDark
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+
+  document.getElementById('mobile-menu').innerHTML = `
+    <div class="mobile-menu-header">
+      <a href="explorar.html" class="logo"><div class="logo-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><span>Bookly</span></a>
+      <button class="mobile-menu-close" onclick="closeMobileMenu()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="mobile-menu-user">
+      <div class="mobile-menu-user-avatar">${user.name.charAt(0).toUpperCase()}</div>
+      <div class="mobile-menu-user-info"><div class="mobile-menu-user-name">${user.name}</div><div class="mobile-menu-user-email">${user.email}</div></div>
+    </div>
+    <a href="explorar.html" class="mobile-menu-item" onclick="closeMobileMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>Explorar livros</a>
+    <a href="cadastrar-livro.html" class="mobile-menu-item" onclick="closeMobileMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Vender livro</a>
+    <a href="explorar.html?tab=meus" class="mobile-menu-item" onclick="closeMobileMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Meus anúncios</a>
+    <a href="planos.html" class="mobile-menu-item" onclick="closeMobileMenu()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/></svg>Planos</a>
+    <div class="mobile-menu-divider"></div>
+    <a href="#" class="mobile-menu-item" onclick="toggleDarkMode();return false;">${darkIcon}Tema escuro/claro</a>
+    <a href="#" class="mobile-menu-item" style="color:var(--vermelho)" onclick="Auth.logout();return false;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Sair da conta</a>`;
+}
+
+// ===== FORM =====
+function selectEstado(btn) {
+  document.querySelectorAll('.estado-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function selectBinding(btn) {
+  btn.parentElement.querySelectorAll('.binding-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+function toggleChip(chip) { chip.classList.toggle('active'); }
+function adjustQty(delta) {
+  const input = document.getElementById('qtd');
+  let val = parseInt(input.value) || 1;
+  input.value = Math.max(1, Math.min(999, val + delta));
+}
+
+function saveStep2() {
+  const estadoEl = document.querySelector('.estado-btn.active');
+  if (!estadoEl) { showNotification('Selecione o estado do livro', 'var(--vermelho)'); return; }
+  const draft = Store.get('bookly_draft', {});
+  draft.estado = estadoEl.dataset.estado;
+  draft.encadernacao = document.querySelector('.binding-btn.active')?.textContent.trim() || 'Capadura';
+  draft.quantidade = document.getElementById('qtd').value;
+  draft.atributos = Array.from(document.querySelectorAll('#chips .chip.active')).map(c => c.textContent.trim());
+  draft.observacoes = document.getElementById('observacoes').value.trim();
+  Store.set('bookly_draft', draft);
+  window.location.href = 'precificacao.html';
+}
+
+function showNotification(msg, color = 'var(--verde)') {
+  const e = document.querySelector('.notification'); if (e) e.remove();
+  const n = document.createElement('div'); n.className = 'notification'; n.style.borderLeft = `3px solid ${color}`;
+  n.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>${msg}`;
+  document.body.appendChild(n);
+  setTimeout(() => { n.style.opacity = '0'; n.style.transform = 'translateY(8px)'; setTimeout(() => n.remove(), 300); }, 2500);
+}
+
+// ===== LOAD DRAFT =====
+const draft = Store.get('bookly_draft', {});
+if (draft.estado) document.querySelectorAll('.estado-btn').forEach(b => { b.classList.toggle('active', b.dataset.estado === draft.estado); });
+if (draft.encadernacao) document.querySelectorAll('.binding-btn').forEach(b => { b.classList.toggle('active', b.textContent.trim() === draft.encadernacao); });
+if (draft.quantidade) document.getElementById('qtd').value = draft.quantidade;
+if (draft.observacoes) document.getElementById('observacoes').value = draft.observacoes;
+if (draft.atributos) {
+  document.querySelectorAll('#chips .chip').forEach(c => { if (draft.atributos.includes(c.textContent.trim())) c.classList.add('active'); });
+}
+
+initDarkMode();
+buildNavbar();
+buildMobileMenu();
+</script>
+</body>
+</html>

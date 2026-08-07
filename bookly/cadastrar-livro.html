@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookly — Cadastrar Livro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="/css/cadastrar-livro.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar"></nav>
+    <div class="menu-overlay" onclick="closeMobileMenu()"></div>
+    <aside class="mobile-menu" id="mobile-menu"></aside>
+
+    <!-- CARD -->
+    <div class="card-wrap">
+        <div class="card">
+            <div class="card-header">
+                <h1>Cadastre seu livro</h1>
+            </div>
+
+            <div class="step-tracker">
+                <div class="step-node">
+                    <div class="step-dot active">1</div><span class="step-text active">Informações básicas</span>
+                </div>
+                <div class="step-bar"></div>
+                <div class="step-node">
+                    <div class="step-dot inactive">2</div><span class="step-text">Características físicas</span>
+                </div>
+                <div class="step-bar"></div>
+                <div class="step-node">
+                    <div class="step-dot inactive">3</div><span class="step-text">Precificação</span>
+                </div>
+            </div>
+
+            <div class="section-label">Detalhes</div>
+
+            <div class="form-scroll">
+                <div class="form-grid">
+
+                    <div class="field full">
+                        <label class="field-label">Título do livro</label>
+                        <div class="input-wrap">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                            </svg>
+                            <input type="text" id="titulo" placeholder="Escreva o nome do livro">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label">Autores</label>
+                        <div class="input-wrap">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                <circle cx="12" cy="7" r="4" />
+                            </svg>
+                            <input type="text" id="autores" placeholder="Escreva os autor(es)">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label">Editora</label>
+                        <div class="input-wrap">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4" />
+                            </svg>
+                            <input type="text" id="editora" placeholder="Escreva a editora">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label">Gênero</label>
+                        <div class="input-wrap select">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+                                <line x1="7" y1="7" x2="7.01" y2="7" />
+                            </svg>
+                            <select id="genero">
+                                <option value="" disabled selected>Escolha o gênero</option>
+                                <option>Ficção</option>
+                                <option>Não-ficção</option>
+                                <option>Romance</option>
+                                <option>Aventura</option>
+                                <option>Biografia</option>
+                                <option>Técnico</option>
+                                <option>Infantil</option>
+                                <option>Terror</option>
+                                <option>Fantasia</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label">Categoria</label>
+                        <div class="input-wrap select">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="3" width="7" height="7" />
+                                <rect x="14" y="3" width="7" height="7" />
+                                <rect x="14" y="14" width="7" height="7" />
+                                <rect x="3" y="14" width="7" height="7" />
+                            </svg>
+                            <select id="categoria">
+                                <option value="" disabled selected>Escolha a categoria</option>
+                                <option>Literatura</option>
+                                <option>Acadêmico</option>
+                                <option>Religioso</option>
+                                <option>Autoajuda</option>
+                                <option>Quadrinhos</option>
+                                <option>Didático</option>
+                                <option>Outro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label">Ano de publicação</label>
+                        <div class="input-wrap">
+                            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" />
+                                <line x1="16" y1="2" x2="16" y2="6" />
+                                <line x1="8" y1="2" x2="8" y2="6" />
+                                <line x1="3" y1="10" x2="21" y2="10" />
+                            </svg>
+                            <input type="text" id="ano" placeholder="MM/DD/AA" maxlength="8">
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="field-label">ISBN</label>
+                        <div class="isbn-row">
+                            <button type="button" class="isbn-opt active" id="isbn-sim" onclick="toggleISBN(true)"><span
+                                    class="isbn-check"></span>Possui</button>
+                            <button type="button" class="isbn-opt" id="isbn-nao" onclick="toggleISBN(false)"><span
+                                    class="isbn-check"></span>Não possui</button>
+                        </div>
+                        <div class="isbn-field visible" id="isbn-field">
+                            <div class="input-wrap" style="margin-top:6px;">
+                                <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M3 5h18M3 12h18M3 19h18" />
+                                </svg>
+                                <input type="text" id="isbn" placeholder="Digite o ISBN" maxlength="17">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- UPLOAD — círculo azul com câmera -->
+                    <div class="upload-area" id="upload-area" onclick="handleUpload()">
+                        <div class="upload-circle" id="upload-circle">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path
+                                    d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                                <circle cx="12" cy="13" r="4" />
+                            </svg>
+                        </div>
+                        <span class="upload-text" id="upload-text">Adicionar foto</span>
+                        <span class="upload-hint" id="upload-hint">PNG, JPG ou WEBP</span>
+                        <input type="file" id="file-input" accept="image/png,image/jpeg,image/webp" style="display:none"
+                            onchange="handleFile(event)">
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <span class="step-info">Passo 1 de 3</span>
+                <div class="footer-btns">
+                    <a href="explorar.html" class="btn btn-outline">Voltar</a>
+                    <button class="btn btn-primary" onclick="saveStep1()">Continuar</button>
+                </div>
+            </div>
+
+            <div class="dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/cadastrar-livro.js"></script>
+</body>
+
+</html>
